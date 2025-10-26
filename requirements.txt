@@ -1,0 +1,26 @@
+# Core data & computation
+pandas==2.2.*
+numpy==1.26.*
+
+# Machine Learning
+scikit-learn==1.4.*
+xgboost==2.0.*
+
+# Model interpretability
+shap==0.44.*
+
+# Visualization
+matplotlib==3.8.*
+
+# App development
+streamlit==1.36.*
+
+# Model persistence / saving
+joblib==1.4.*
+
+# Optional but recommended (for notebooks)
+jupyterlab==4.2.*
+notebook==7.2.*
+
+# Optional (for clean visualizations)
+seaborn==0.13.*
