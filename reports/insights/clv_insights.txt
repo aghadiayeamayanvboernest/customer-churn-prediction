@@ -1,0 +1,9 @@
+--- Key Insights ---
+💡 Loyalty Insight: High-CLV customers (Q4) are the most loyal, with a churn rate of only 9.38%.
+🔥 Highest Churn Risk: The **Q3** segment has the highest churn rate at a staggering **44.50%**.
+
+--- Recommendations ---
+1. **Urgent Action:** Prioritize retention efforts on the **Q3** segment. Their high churn rate presents the biggest immediate threat to revenue.
+2. **Nurture Loyalty:** While Q4 customers are loyal, their high value warrants continued engagement and satisfaction monitoring to maintain low churn.
+
+📊 Overall average churn rate across all segments: 26.54%

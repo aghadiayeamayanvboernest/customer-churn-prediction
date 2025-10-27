@@ -1,0 +1,29 @@
+--- Model Interpretability Insights ---
+This report summarizes the key drivers of customer churn based on our models.
+
+
+--- Logistic Regression Insights ---
+
+Top 3 features INCREASING churn risk:
+  - services_count (Coefficient: 0.67)
+  - InternetService (Coefficient: 0.45)
+  - internet_no_techsupport (Coefficient: 0.45)
+
+Top 3 features DECREASING churn risk (promoting retention):
+  - tenure (Coefficient: -0.87)
+  - ExpectedTenure (Coefficient: -0.43)
+  - Contract (Coefficient: -0.43)
+
+
+--- Tree Model (Random Forest/XGBoost) Insights ---
+SHAP (SHapley Additive exPlanations) values provide a unified measure of feature importance for tree models.
+Key takeaways from SHAP plots:
+  - Feature Importance (Bar Plot): Shows the average impact of each feature on model output magnitude.
+  - Summary Plot (Dot Plot): Reveals not just the importance, but also the direction and distribution of effects.
+  - Positive SHAP values indicate a push towards churn; negative values signal a push towards retention.
+
+
+--- General Recommendations ---
+1. Focus retention efforts on customers exhibiting characteristics of the top churn-driving features.
+2. Leverage insights from retention-driving features to inform marketing and customer success strategies.
+3. Use these insights in the Streamlit dashboard to provide transparent, per-customer predictions.
