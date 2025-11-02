@@ -137,10 +137,11 @@ def show_model_performance_tab(models, scaler, X_test, y_test):
     Select a model from the dropdown to view its confusion matrix and feature importance.
     </p>
     """, unsafe_allow_html=True)
-    model_choice = st.selectbox("Select a model to view its Confusion Matrix and Feature Importance:", list(models.keys()))
+    model_choice = st.selectbox("Select a model to view its Confusion Matrix and Feature Importance:", [m for m in models.keys() if m != 'Ensemble'])
 
     st.subheader(f"📈 Confusion Matrix: {model_choice}")
-    y_pred_selected = models[model_choice].predict(X_test_scaled)
+    selected_model = models[model_choice]
+    y_pred_selected = selected_model.predict(X_test_scaled)
     
     cm = confusion_matrix(y_test, y_pred_selected)
     
