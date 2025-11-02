@@ -5,7 +5,16 @@ import matplotlib.pyplot as plt
 import os
 
 def load_processed_data(path="data/processed/X_train.csv", y_path="data/processed/y_train.csv"):
-    """Load processed feature and target data for CLV analysis."""
+    """
+    Loads processed feature and target data for CLV analysis.
+
+    Args:
+        path (str): File path to the processed features (X_train.csv).
+        y_path (str): File path to the processed target (y_train.csv).
+
+    Returns:
+        pd.DataFrame: A DataFrame containing features and the 'Churn' target column.
+    """
     X = pd.read_csv(path)
     y = pd.read_csv(y_path)
     X["Churn"] = y.values
@@ -13,7 +22,18 @@ def load_processed_data(path="data/processed/X_train.csv", y_path="data/processe
     return X
 
 def analyze_clv(df):
-    """Compute CLV quartiles and churn rates."""
+    """
+    Computes CLV quartiles and churn rates based on the input DataFrame.
+
+    Args:
+        df (pd.DataFrame): DataFrame containing 'CLV' and 'Churn' columns.
+
+    Returns:
+        pd.DataFrame: A summary DataFrame with CLV quartiles, churn rates, and customer counts.
+
+    Raises:
+        ValueError: If the 'CLV' column is not found in the DataFrame.
+    """
     # Ensure CLV exists
     if "CLV" not in df.columns:
         raise ValueError("❌ 'CLV' column not found. Make sure data_prep.py created it.")
@@ -36,7 +56,12 @@ def analyze_clv(df):
     return clv_summary
 
 def plot_clv_distribution(df):
-    """Plot CLV distribution."""
+    """
+    Generates and saves a histogram of the Customer Lifetime Value (CLV) distribution.
+
+    Args:
+        df (pd.DataFrame): DataFrame containing a 'CLV' column.
+    """
     os.makedirs("reports/figures", exist_ok=True)
 
     plt.figure(figsize=(8, 5))
@@ -51,7 +76,13 @@ def plot_clv_distribution(df):
     print("📈 Saved: reports/figures/clv_distribution.png")
 
 def plot_churn_by_clv_segment(clv_summary):
-    """Plot churn rate by CLV quartile."""
+    """
+    Generates and saves a bar plot of churn rate by CLV quartile.
+
+    Args:
+        clv_summary (pd.DataFrame): Summary DataFrame from `analyze_clv` containing
+                                    'CLV_quartile' and 'churn_rate' columns.
+    """
     plt.figure(figsize=(7, 5))
     plt.bar(clv_summary["CLV_quartile"], clv_summary["churn_rate"], color="orange", edgecolor="black")
     plt.title("Churn Rate by CLV Quartile")
@@ -65,7 +96,14 @@ def plot_churn_by_clv_segment(clv_summary):
     print("📊 Saved: reports/figures/churn_rate_by_clv.png")
 
 def generate_insights(clv_summary):
-    """Generate and save more detailed, data-driven insights."""
+    """
+    Generates and saves detailed, data-driven insights based on CLV analysis.
+
+    Identifies highest churn segments and provides recommendations.
+
+    Args:
+        clv_summary (pd.DataFrame): Summary DataFrame from `analyze_clv`.
+    """
     insights = []
 
     # Find the segment with the highest churn rate

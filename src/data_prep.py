@@ -6,20 +6,48 @@ from sklearn.preprocessing import LabelEncoder
 import os
 
 def load_data(path="data/raw/telco.csv"):
-    """Load raw dataset"""
+    """
+    Loads the raw dataset from the specified CSV path.
+
+    Args:
+        path (str): The file path to the raw CSV data.
+
+    Returns:
+        pd.DataFrame: The loaded DataFrame.
+    """
     df = pd.read_csv(path)
     print(f"✅ Data loaded: {df.shape[0]} rows, {df.shape[1]} columns")
     return df
 
 def clean_data(df):
-    """Handle TotalCharges missing values and convert data types"""
+    """
+    Handles missing values in 'TotalCharges' and converts data types.
+
+    Args:
+        df (pd.DataFrame): The input DataFrame.
+
+    Returns:
+        pd.DataFrame: The DataFrame with cleaned 'TotalCharges' and corrected data types.
+    """
     df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
     df["TotalCharges"].fillna(df["MonthlyCharges"] * df["tenure"], inplace=True)
     df["TotalCharges"] = df["TotalCharges"].astype(float)
     return df
 
 def engineer_features(df):
-    """Create business-driven features"""
+    """
+    Engineers new business-driven features from the raw data.
+
+    Features created include 'tenure_bucket', 'services_count',
+    'monthly_to_total_ratio', 'internet_no_techsupport', 'ExpectedTenure',
+    and 'CLV'. It also converts the 'Churn' column to a binary integer.
+
+    Args:
+        df (pd.DataFrame): The input DataFrame.
+
+    Returns:
+        pd.DataFrame: The DataFrame with engineered features.
+    """
     # tenure_bucket
     df["tenure_bucket"] = pd.cut(df["tenure"],
                                  bins=[0, 6, 12, 24, 1000],
@@ -51,7 +79,19 @@ def engineer_features(df):
     return df
 
 def split_data(df, target_col="Churn"):
-    """Split into train/val/test (60/20/20) before encoding"""
+    """
+    Splits the input DataFrame into training, validation, and test sets.
+
+    The split ratio is 60% for training, 20% for validation, and 20% for testing.
+    The split is stratified based on the target column.
+
+    Args:
+        df (pd.DataFrame): The input DataFrame containing features and the target.
+        target_col (str): The name of the target column.
+
+    Returns:
+        tuple: X_train, X_val, X_test, y_train, y_val, y_test DataFrames.
+    """
     X = df.drop(columns=[target_col, "customerID"]) # Drop customerID as it's an identifier
     y = df[target_col]
 
@@ -65,7 +105,20 @@ def split_data(df, target_col="Churn"):
     return X_train, X_val, X_test, y_train, y_val, y_test
 
 def encode_data(X_train, X_val, X_test):
-    """Encode categorical features after splitting to prevent data leakage."""
+    """
+    Encodes categorical features using Label Encoding.
+
+    Fits the LabelEncoder on the training data and transforms all three datasets
+    (train, validation, test) to prevent data leakage.
+
+    Args:
+        X_train (pd.DataFrame): Training features DataFrame.
+        X_val (pd.DataFrame): Validation features DataFrame.
+        X_test (pd.DataFrame): Test features DataFrame.
+
+    Returns:
+        tuple: X_train, X_val, X_test (with encoded features), and a dictionary of fitted LabelEncoders.
+    """
     # Identify categorical columns (object type)
     categorical_cols = X_train.select_dtypes(include=["object", "category"]).columns
 
@@ -83,7 +136,13 @@ def encode_data(X_train, X_val, X_test):
     return X_train, X_val, X_test, label_encoders
 
 def save_splits(output_dir, **kwargs):
-    """Save processed dataframes to a directory."""
+    """
+    Saves processed dataframes to a specified directory.
+
+    Args:
+        output_dir (str): The directory where the DataFrames will be saved.
+        **kwargs: Keyword arguments where keys are filenames (without .csv) and values are DataFrames.
+    """
     os.makedirs(output_dir, exist_ok=True)
     for name, df in kwargs.items():
         df.to_csv(os.path.join(output_dir, f"{name}.csv"), index=False)

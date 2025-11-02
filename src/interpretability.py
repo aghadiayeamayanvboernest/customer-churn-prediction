@@ -1,5 +1,4 @@
-"""
-Day 6 - Model Interpretability
+"""Interpretability Analysis for Churn Prediction Models
 -------------------------------
 This script explains the trained churn prediction models using:
 - Logistic Regression coefficients
@@ -48,6 +47,15 @@ print(f"✅ Loaded models: {', '.join(models.keys())}\n")
 
 # === Logistic Regression Feature Importance ===
 def explain_logistic_regression(model, X):
+    """
+    Generates and saves feature importance for a Logistic Regression model.
+
+    Calculates coefficients, saves them to a CSV, and plots the top 15 influential features.
+
+    Args:
+        model (LogisticRegression): The trained Logistic Regression model.
+        X (pd.DataFrame): The DataFrame of features used for explanation.
+    """
     coef = model.coef_[0]
     feature_importance = pd.DataFrame({
         "feature": X.columns,
@@ -71,6 +79,16 @@ def explain_logistic_regression(model, X):
 
 # === SHAP Analysis for Tree Models ===
 def explain_tree_model(model, X, model_name):
+    """
+    Performs SHAP analysis for tree-based models and saves summary plots.
+
+    Generates SHAP summary plots (dot and bar) to explain feature contributions.
+
+    Args:
+        model: The trained tree-based model (e.g., RandomForestClassifier, XGBClassifier).
+        X (pd.DataFrame): The DataFrame of features used for explanation.
+        model_name (str): The name of the model (e.g., "Random Forest", "XGBoost").
+    """
     print(f"🔍 Explaining {model_name} with SHAP...")
 
     explainer = shap.Explainer(model, X)
@@ -95,6 +113,11 @@ def explain_tree_model(model, X, model_name):
 
 # === Generate Insights ===
 def save_interpretability_insights():
+    """
+    Saves general interpretability insights to a text file.
+
+    Provides a summary of how model interpretability is approached in the project.
+    """
     insights = [
         "--- Model Interpretability Insights ---",
         "1. Logistic Regression coefficients reveal which features most increase or decrease churn likelihood.",

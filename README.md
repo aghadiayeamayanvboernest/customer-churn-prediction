@@ -1,60 +1,58 @@
-# Customer Churn Prediction & Customer Lifetime Value (CLV)
+# Customer Churn Prediction & Customer Lifetime Value (CLV) Dashboard
 
-This project aims to predict customer churn for a SaaS company and identify high-value customers to prioritize for retention efforts. By analyzing customer data, we build machine learning models to predict churn probability and calculate Customer Lifetime Value (CLV). The entire analysis is presented in an interactive Streamlit application.
+## Project Overview
+This project implements an interactive Streamlit dashboard for predicting customer churn and analyzing Customer Lifetime Value (CLV). It leverages machine learning models to provide insights into customer behavior, identify at-risk customers, and offer business recommendations to improve retention and maximize customer value.
 
-**Video Demo:** [Link to your 2-3 minute video demo]
-
-## Business Context
-
-Customer churn is a significant challenge for SaaS businesses, with an average of 5-7% of annual revenue lost. This project addresses this by:
-1.  **Predicting Churn:** Identifying customers who are likely to cancel their subscriptions.
-2.  **Estimating Customer Value:** Using CLV to quantify the financial value of each customer, enabling targeted retention strategies.
+## Business Framing
+This project is designed to help a telecommunications company reduce customer churn and increase profitability. By predicting which customers are likely to churn, the company can proactively target them with retention campaigns. The dashboard also provides insights into Customer Lifetime Value (CLV), allowing the business to segment customers and prioritize high-value customers.
 
 ## Features
+The dashboard is structured into several key sections:
 
-*   **Data Preparation:** Cleans and preprocesses the IBM Telco Customer Churn dataset, including business-driven feature engineering.
-*   **CLV Analysis:** Calculates CLV for each customer and segments them into value-based quartiles (Low, Medium, High, Premium).
-*   **Machine Learning Models:** Trains and evaluates three different models for churn prediction:
-    *   Logistic Regression (Baseline)
-    *   Random Forest
-    *   XGBoost
-*   **Model Interpretability:** Uses SHAP (SHapley Additive exPlanations) to explain model predictions, providing both global and local feature importance.
-*   **Interactive Application:** A single-page Streamlit app with tabs for:
-    *   **Predict:** Get real-time churn predictions and explanations for a single customer.
-    *   **Model Performance:** Compare evaluation metrics, ROC curves, and feature importance for all models.
-    *   **CLV Overview:** Visualize CLV distribution and churn rates across different customer segments.
-*   **Cloud Deployment:** The application is deployed on Streamlit Community Cloud for easy access.
+*   **🔮 Predict Tab:**
+    *   Allows users to input customer details and get real-time churn probability predictions using a selected machine learning model.
+    *   Visualizes churn risk with a speedometer gauge.
+    *   Provides estimated Customer Lifetime Value (CLV) for the input customer.
+    *   Offers detailed prediction explanations (SHAP values for tree-based models, feature coefficients for Logistic Regression).
+    *   Generates actionable business insights and recommendations based on the predicted churn risk.
 
-## Repository Structure
+*   **📊 Model Performance Tab:**
+    *   Compares the performance of different machine learning models (Logistic Regression, Random Forest, XGBoost) based on metrics like Precision, Recall, F1-Score, and AUC-ROC.
+    *   Highlights the best-performing model for each metric.
+    *   Displays ROC curves for all models.
+    *   Provides detailed analysis for a selected model, including its Confusion Matrix and Feature Importance visualizations.
 
-```
-project2-churn-prediction/
-├── README.md
-├── AI_USAGE.md
-├── requirements.txt
-├── data/
-│   ├── raw/
-│   └── processed/
-├── src/
-│   ├── data_prep.py
-│   ├── clv_analysis.py
-│   ├── train_models.py
-│   ├── interpretability.py
-│   └── predict.py
-├── models/
-│   ├── logistic.pkl
-│   ├── rf.pkl
-│   └── xgb.pkl
-├── app.py
-└── notebooks/
-    └── exploration.ipynb (optional)
-```
+*   **💰 CLV Overview Tab:**
+    *   Presents an overview of Customer Lifetime Value distribution.
+    *   Visualizes churn rate by CLV segments.
+    *   Offers key business insights derived from CLV analysis.
 
-## How to Run
+*   **Sidebar:**
+    *   Displays a project title and a brief description.
+    *   Shows key overall metrics: Total Customers, Overall Churn Rate, and Average CLV.
+    *   Includes a "Credits" section.
+
+## CLV Assumptions
+The Customer Lifetime Value (CLV) in this dashboard is a simplified estimation. It is calculated as:
+`CLV = MonthlyCharges * Expected_Tenure`
+The `Expected_Tenure` is a fixed value of 24 months. This is a simplification and in a real-world scenario, it would be more accurately predicted based on customer data and other factors.
+
+## Technologies Used
+*   **Python:** Programming language
+*   **Streamlit:** For building the interactive web application
+*   **Pandas & NumPy:** For data manipulation and numerical operations
+*   **Scikit-learn:** For machine learning model training and evaluation
+*   **XGBoost:** Gradient Boosting library
+*   **SHAP:** For model interpretability (SHapley Additive exPlanations)
+*   **Matplotlib, Seaborn, Plotly:** For data visualization
+*   **Joblib:** For saving and loading trained models and scaler
+
+## Installation
+To set up and run this project locally, follow these steps:
 
 1.  **Clone the repository:**
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/aghadiayeamayanvboernest/customer-churn-prediction.git
     cd customer-churn-prediction
     ```
 
@@ -64,43 +62,66 @@ project2-churn-prediction/
     source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
     ```
 
-3.  **Install the dependencies:**
+3.  **Install dependencies:**
     ```bash
     pip install -r requirements.txt
     ```
 
-4.  **Run the data preparation and model training scripts:**
-    *This step is necessary to generate the processed data and trained models.*
-    ```bash
-    python src/data_prep.py
-    python src/train_models.py
-    ```
+## Usage
+To run the Streamlit application, execute the following command from the project's root directory:
 
-5.  **Run the Streamlit application:**
-    ```bash
-    streamlit run app.py
-    ```
-    The application will be available at `http://localhost:8501`.
+```bash
+streamlit run app.py
+```
 
-## CLV Assumptions
+The application will open in your default web browser.
 
-The Customer Lifetime Value (CLV) is calculated with the following formula and assumptions:
+## Project Structure
+```
+.
+├── app.py                      # Main Streamlit application file
+├── requirements.txt            # Python dependencies
+├── data/
+│   ├── processed/              # Processed data files (X_train, y_test, clv_summary, etc.)
+│   └── raw/                    # Raw data files (telco.csv)
+├── models/                     # Trained machine learning models and scaler
+│   ├── logistic_regression.joblib
+│   ├── random_forest.joblib
+│   ├── scaler.joblib
+│   └── xgboost.joblib
+├── notebooks/                  # Jupyter notebooks for EDA, model training, etc.
+├── reports/
+│   ├── figures/                # Visualizations and plots
+│   ├── insights/               # Text-based insights
+│   └── interpretability/       # Model interpretability plots
+└── src/
+    ├── clv_analysis.py         # Functions for CLV analysis
+    ├── data_prep.py            # Data preprocessing scripts
+    ├── interpretability.py     # Scripts for model interpretability
+    ├── predict.py              # Prediction logic
+    ├── train_models.py         # Model training scripts
+    ├── verify_splits.py        # Data split verification
+    ├── sidebar.py              # Sidebar content and logic
+    └── tabs/
+        ├── clv_overview_tab.py # CLV Overview tab content
+        └── model_performance_tab.py # Model Performance tab content
+```
 
-*   **Formula:** `CLV = MonthlyCharges × ExpectedTenure`
-*   **Expected Tenure:** A predefined assumption for how long a customer is expected to stay. This should be clearly stated and justified based on business knowledge or data analysis. For this project, the assumption for `ExpectedTenure` needs to be defined.
+## Data
+The project utilizes a Telco Customer Churn dataset, commonly available from sources like Kaggle or IBM. This dataset includes various demographic, service, and account information for customers. The data is preprocessed and split into training, validation, and test sets.
 
-## Data Source
+**Acknowledgment:** The Telco Customer Churn dataset is publicly available and widely used for educational and research purposes. We acknowledge the original creators and distributors of this valuable dataset.
 
-The project uses the **IBM Telco Customer Churn** dataset.
-*   **Direct CSV Link:** [https://raw.githubusercontent.com/IBM/telco-customer-churn-on-icp4d/master/data/Telco-Customer-Churn.csv](https://raw.githubusercontent.com/IBM/telco-customer-churn-on-icp4d/master/data/Telco-Customer-Churn.csv)
+## Models
+The dashboard integrates three machine learning models for churn prediction:
+*   **Logistic Regression:** A linear model providing interpretable coefficients.
+*   **Random Forest:** An ensemble tree-based model known for its robustness.
+*   **XGBoost:** A highly efficient and powerful gradient boosting framework.
 
-## Dependencies
+## Credits
+*   **Developed by:** Aghadiaye Amayanvbo Ernest
+*   **GitHub:** [https://github.com/aghadiayeamayanvboernest](https://github.com/aghadiayeamayanvboernest)
+*   **Assisted by:** Gemini CLI Agent
 
-The main libraries used in this project are listed in `requirements.txt`. Key dependencies include:
-
-*   `pandas`
-*   `scikit-learn`
-*   `xgboost`
-*   `shap`
-*   `streamlit`
-*   `matplotlib`
+## License
+This project is open-source and available under the MIT License.

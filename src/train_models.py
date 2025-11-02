@@ -10,6 +10,16 @@ from sklearn.preprocessing import StandardScaler
 
 # Load processed data
 def load_data():
+    """
+    Loads preprocessed training and validation data from the 'data/processed' directory.
+
+    Returns:
+        tuple: A tuple containing four DataFrames:
+               - X_train: Training features.
+               - X_val: Validation features.
+               - y_train: Training target.
+               - y_val: Validation target.
+    """
     base_path = "data/processed"
     X_train = pd.read_csv(os.path.join(base_path, "X_train.csv"))
     y_train = pd.read_csv(os.path.join(base_path, "y_train.csv")).values.ravel()
@@ -19,6 +29,23 @@ def load_data():
 
 # Train models and evaluate
 def train_and_evaluate_models(X_train, y_train, X_val, y_val):
+    """
+    Trains and evaluates multiple models.
+
+    This function scales the data, trains Logistic Regression, Random Forest, and XGBoost
+    models, evaluates their performance on the validation set, and saves the scaler.
+
+    Args:
+        X_train (pd.DataFrame): Training features.
+        y_train (np.ndarray): Training target.
+        X_val (pd.DataFrame): Validation features.
+        y_val (np.ndarray): Validation target.
+
+    Returns:
+        tuple: A tuple containing:
+               - dict: A dictionary of performance metrics for each model.
+               - dict: A dictionary of trained model objects.
+    """
     # --- 1. Scale the data ---
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
@@ -64,6 +91,13 @@ def train_and_evaluate_models(X_train, y_train, X_val, y_val):
 
 # Save all models
 def save_all_models(models):
+    """
+    Saves all trained models to the 'models' directory.
+
+    Args:
+        models (dict): A dictionary where keys are model names and values are
+                       trained model objects.
+    """
     os.makedirs("models", exist_ok=True)
     for name, model in models.items():
         model_path = f"models/{name.replace(' ', '_').lower()}.joblib"

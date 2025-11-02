@@ -4,7 +4,17 @@ import pandas as pd
 import os
 
 def verify_processed_data(path="data/processed"):
-    """Check the integrity of processed data splits."""
+    """Verifies the integrity of the processed data splits.
+
+    This function checks for:
+    1. The existence of all data splits (X_train, X_val, X_test, y_train, y_val, y_test).
+    2. The shape of each data split.
+    3. Matching row counts between feature and target sets.
+    4. Any missing values in the feature sets.
+
+    Args:
+        path (str): The path to the processed data directory.
+    """
     expected_files = [
         "X_train.csv", "X_val.csv", "X_test.csv",
         "y_train.csv", "y_val.csv", "y_test.csv"

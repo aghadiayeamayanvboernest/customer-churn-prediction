@@ -1,26 +1,27 @@
 # Core data & computation
-pandas==2.2.*
-numpy==1.26.*
+pandas==2.2.0
+numpy==1.26.0
 
 # Machine Learning
-scikit-learn==1.4.*
-xgboost==2.0.*
+scikit-learn==1.4.0
+xgboost==2.0.0
 
 # Model interpretability
-shap==0.44.*
+shap==0.44.0
 
 # Visualization
-matplotlib==3.8.*
+matplotlib==3.8.0
+plotly==5.20.0
 
 # App development
-streamlit==1.36.*
+streamlit==1.36.0
 
 # Model persistence / saving
-joblib==1.4.*
+joblib==1.4.0
 
 # Optional but recommended (for notebooks)
-jupyterlab==4.2.*
-notebook==7.2.*
+jupyterlab==4.2.0
+notebook==7.2.0
 
 # Optional (for clean visualizations)
-seaborn==0.13.*
+seaborn==0.13.0
