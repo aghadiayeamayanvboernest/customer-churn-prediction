@@ -69,10 +69,14 @@ def load_data():
 
 @st.cache_resource
 def load_models():
-    scaler = joblib.load('models/scaler.joblib')
-    log_reg = joblib.load('models/logistic_regression.joblib')
-    random_forest = joblib.load('models/random_forest.joblib')
-    xgboost = joblib.load('models/xgboost.joblib')
+    try:
+        scaler = joblib.load('models/scaler.joblib')
+        log_reg = joblib.load('models/logistic_regression.joblib')
+        random_forest = joblib.load('models/random_forest.joblib')
+        xgboost = joblib.load('models/xgboost.joblib')
+    except FileNotFoundError as e:
+        st.error(f"Error loading model file: {e}. Please ensure all model files are in the 'models/' directory.")
+        return None, None, None, None
     return scaler, log_reg, random_forest, xgboost
 
 @st.cache_resource
