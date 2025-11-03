@@ -79,8 +79,13 @@ The application will open in your default web browser.
 ## Project Structure
 ```
 .
+├── .gitignore
+├── AI_USAGE.md
+├── README.md
 ├── app.py                      # Main Streamlit application file
+├── packages.txt
 ├── requirements.txt            # Python dependencies
+├── runtime.txt
 ├── data/
 │   ├── processed/              # Processed data files (X_train, y_test, clv_summary, etc.)
 │   └── raw/                    # Raw data files (telco.csv)
