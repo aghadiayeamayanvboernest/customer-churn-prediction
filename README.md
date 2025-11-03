@@ -125,3 +125,7 @@ The dashboard integrates three machine learning models for churn prediction:
 
 ## License
 This project is open-source and available under the MIT License.
+
+## Live Application
+
+🚀 **View the deployed Streamlit application here:** [https://customer-churn-prediction-ernest.streamlit.app/](https://customer-churn-prediction-ernest.streamlit.app/)

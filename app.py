@@ -80,9 +80,9 @@ def load_models():
     return scaler, log_reg, random_forest, xgboost
 
 @st.cache_resource
-def get_tree_explainer(model):
+def get_tree_explainer(_model):
     import shap
-    return shap.TreeExplainer(model)
+    return shap.TreeExplainer(_model)
 
 # Load data and models
 X_train, X_test, y_test, clv_summary = load_data()
@@ -207,7 +207,29 @@ with tab1:
         with st.expander("View Prediction Details"):
             st.subheader("🔍 Prediction Explanation")
             if model_choice == "Ensemble":
-                st.write("Prediction explanation is not available for the Ensemble model.")
+                st.write("Displaying explanations for constituent models:")
+                
+                st.subheader("Logistic Regression Explanation (Ensemble Component)")
+                fig_lr = plot_log_reg_explanation(input_scaled, models["Logistic Regression"], model_columns)
+                st.pyplot(fig_lr)
+
+                st.subheader("Random Forest Explanation (Ensemble Component)")
+                explainer_rf = get_tree_explainer(models["Random Forest"])
+                shap_values_rf = explainer_rf.shap_values(input_scaled)
+                if isinstance(shap_values_rf, list):
+                    shap.force_plot(explainer_rf.expected_value[1], shap_values_rf[1], input_df_processed.iloc[0,:], matplotlib=True, show=False)
+                else:
+                    shap.force_plot(explainer_rf.expected_value, shap_values_rf, input_df_processed.iloc[0,:], matplotlib=True, show=False)
+                st.pyplot(bbox_inches='tight')
+
+                st.subheader("XGBoost Explanation (Ensemble Component)")
+                explainer_xgb = get_tree_explainer(models["XGBoost"])
+                shap_values_xgb = explainer_xgb.shap_values(input_scaled)
+                if isinstance(shap_values_xgb, list):
+                    shap.force_plot(explainer_xgb.expected_value[1], shap_values_xgb[1], input_df_processed.iloc[0,:], matplotlib=True, show=False)
+                else:
+                    shap.force_plot(explainer_xgb.expected_value, shap_values_xgb, input_df_processed.iloc[0,:], matplotlib=True, show=False)
+                st.pyplot(bbox_inches='tight')
             elif model_choice in ['Random Forest', 'XGBoost']:
                 explainer = get_tree_explainer(selected_model)
                 shap_values = explainer.shap_values(input_scaled)

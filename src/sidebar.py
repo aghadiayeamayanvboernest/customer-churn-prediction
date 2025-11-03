@@ -30,7 +30,7 @@ def show_sidebar(X_train, X_test, y_test, clv_summary):
     st.sidebar.subheader("🏆 Credits")
     st.sidebar.markdown("Developed by: Aghadiaye Amayanvbo Ernest")
     st.sidebar.markdown("GitHub: [aghadiayeamayanvboernest](https://github.com/aghadiayeamayanvboernest)")
-    st.sidebar.markdown("LinkedIn: [Aghadiaye Ernest](www.linkedin.com/in/ernest-jacob)")
+    st.sidebar.write('LinkedIn: <a href="https://www.linkedin.com/in/ernest-jacob" target="_blank">Aghadiaye Ernest</a>', unsafe_allow_html=True)
 
     # Streamlit's built-in theme switcher is available in the settings menu (hamburger icon).
     # Custom theme toggles in the sidebar require more advanced techniques.
