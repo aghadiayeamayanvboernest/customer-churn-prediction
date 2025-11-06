@@ -39,7 +39,7 @@ def analyze_clv(df):
         raise ValueError("❌ 'CLV' column not found. Make sure data_prep.py created it.")
 
     # Create quartiles
-    df["CLV_quartile"] = pd.qcut(df["CLV"], 4, labels=["Q1 (Low)", "Q2", "Q3", "Q4 (High)"])
+    df["CLV_quartile"] = pd.qcut(df["CLV"], 4, labels=["Low", "Medium", "High", "Premium"])
 
     # Compute churn rate by quartile
     clv_summary = df.groupby("CLV_quartile")["Churn"].agg(["mean", "count"]).reset_index()
@@ -110,22 +110,22 @@ def generate_insights(clv_summary):
     highest_churn_segment = clv_summary.loc[clv_summary['churn_rate'].idxmax()]
     
     # Get churn rates for the highest and lowest CLV quartiles
-    high_clv_churn = clv_summary[clv_summary['CLV_quartile'] == 'Q4 (High)']['churn_rate'].iloc[0]
-    low_clv_churn = clv_summary[clv_summary['CLV_quartile'] == 'Q1 (Low)']['churn_rate'].iloc[0]
+    high_clv_churn = clv_summary[clv_summary['CLV_quartile'] == 'Premium']['churn_rate'].iloc[0]
+    low_clv_churn = clv_summary[clv_summary['CLV_quartile'] == 'Low']['churn_rate'].iloc[0]
 
     # --- Generate Insights ---
     insights.append("--- Key Insights ---")
     if high_clv_churn < low_clv_churn:
-        insights.append(f"💡 Loyalty Insight: High-CLV customers (Q4) are the most loyal, with a churn rate of only {high_clv_churn:.2%}.")
+        insights.append(f"💡 Loyalty Insight: High-CLV customers (Premium) are the most loyal, with a churn rate of only {high_clv_churn:.2%}.")
     else:
-        insights.append(f"⚠️ Retention Risk: High-CLV customers (Q4) are churning at a concerning rate of {high_clv_churn:.2%}.")
+        insights.append(f"⚠️ Retention Risk: High-CLV customers (Premium) are churning at a concerning rate of {high_clv_churn:.2%}.")
 
     insights.append(f"🔥 Highest Churn Risk: The **{highest_churn_segment['CLV_quartile']}** segment has the highest churn rate at a staggering **{highest_churn_segment['churn_rate']:.2%}**.")
 
     # --- Generate Recommendations ---
     insights.append("\n--- Recommendations ---")
     insights.append(f"1. **Urgent Action:** Prioritize retention efforts on the **{highest_churn_segment['CLV_quartile']}** segment. Their high churn rate presents the biggest immediate threat to revenue.")
-    insights.append("2. **Nurture Loyalty:** While Q4 customers are loyal, their high value warrants continued engagement and satisfaction monitoring to maintain low churn.")
+    insights.append("2. **Nurture Loyalty:** While Premium customers are loyal, their high value warrants continued engagement and satisfaction monitoring to maintain low churn.")
     
     # --- Add overall average churn ---
     avg_churn = clv_summary['churn_rate'].mean()
